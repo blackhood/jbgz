@@ -3,11 +3,10 @@
 // var mangodb = require('mongodb');
 
 // constructor
-function USER(username){
+function USER(){
     // some internal variables
-    this.username = username;
+    // this.username = username;
 }
-
 
 
 USER.prototype.some_function_name = function(argument, callback){
@@ -17,6 +16,12 @@ USER.prototype.some_function_name = function(argument, callback){
 
     callback(result);
 };
+
+USER.prototype.update_user = function(para){
+
+};
+
+USER.prototype.some_var = "";
 
 
 
