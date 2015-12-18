@@ -20,6 +20,7 @@ router.get('/', function(req, res) {
         console.log('this is the main page');
         
         if (err) {
+            console.log(err);
             // res.render('error', {'title': 'jbgz'});
         } else {
             res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos});

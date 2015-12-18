@@ -1,0 +1,32 @@
+CREATE KEYSPACE jbgz WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+DESCRIBE keyspaces;
+USE jbgz;
+
+
+CREATE TABLE user (
+    user_id uuid,
+    name varchar,
+    password blob,
+    created_date timestamp,
+    emails set<text>,
+    gender text,
+    user_thumbnails blob,
+    videos set<uuid>,
+    PRIMARY KEY (user_id)
+);
+
+
+CREATE TABLE video (
+    video_id uuid,
+    user_id uuid,
+    title varchar,
+    description text,
+    upload_date timestamp,
+    duration timestamp,
+    tags set<text>,
+    src text,
+    video_thumbnails set<blob>,
+    image_thumbnail <blob>,
+    views int,
+    PRIMARY KEY (video_id)
+);
