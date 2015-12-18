@@ -9,28 +9,20 @@ function VIDEO(){
 };
 
 
+
 VIDEO.prototype.get_hot_videos = function(start, end, callback){
-    var result = ['simon', 'ruki'];
+
+    videos = [{name: 'ruki'}, {name: 'simon'}];
 
     // do something query
-    var error = 0;
-    callback(result, error);
+    callback(null, videos);
 };
 
 VIDEO.prototype.get_recent_videos = function(start, end, callback){
 };
 
-VIDEO.prototype.search_videos = function(start, end, callback){
+VIDEO.prototype.search_videos = function(keyword, callback){
 };
-
-
-
-
-
-
-VIDEO.prototype.get_videos_of_user = function(user_id, callback){
-};
-
 
 
 

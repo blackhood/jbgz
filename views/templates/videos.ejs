@@ -1,0 +1,49 @@
+<div class="row center-block">
+    <div class="animated fadeInRight center-block">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="category-title"><span class="glyphicon"></span>
+                            <% if(hot_videos){ %>
+                                <% var videos = hot_videos %>
+                                <span class="view-more"><a href="#">观看更多</a></span>
+                            <% } %>
+                        </h2>
+                    </div>
+                </div>
+
+                <% for(var i=0; i < videos.length; i++) {
+
+                
+                
+                    var name = videos[i].name;
+                    
+                %>
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="#">
+                                <span class="corner"></span>
+
+                                <div class="image">
+                                    <img alt="image" class="img-responsive" src="">
+                                </div>
+                                <div class="file-name" style="text-align: center"> <%=name%>
+                                    <br/>
+                                    <small>作者 <a href="#"></a>观看 </small>
+                                    <br/>
+                                    <small> 时长:</small>
+                                    <br/>
+                                    <small> 添加:</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+                <% } %>
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,11 +15,17 @@ router.use('/user', require('./user_controller.js'));
 router.get('/', function(req, res) {
     // var keyword = req.query.keyword;
     var video = new VIDEO();
-    video.get_hot_videos(0,15, function(result, error){
-        console.log(result);
-        console.log(error);
+    video.get_hot_videos(0,15, function(err, hot_videos){
+        // console.log(error);
         console.log('this is the main page');
-        res.render('index', {'title': 'jbgz', 'result': result});
+        
+        if (err) {
+            // res.render('error', {'title': 'jbgz'});
+        } else {
+            res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos});
+        }
+
+       
     });
 
     // res.render('index', {title: 'jbgz', 'result': ['simon']});
