@@ -20,19 +20,22 @@ VIDEO.prototype.get_hot_videos = function(start, end, callback){
     //             'FROM jbgz.video v INNER JOIN jbgz.user u ON ' +
     //             'v.user_id = u.user_id ORDER BY v.views ' +
     //             'DESC LIMIT ' + start + ',' + end;
-    
-    var cmd = "SELECT video_id, title FROM jbgz.video";
-    client.execute(cmd, function (err, result) {
-            if (err) {
-                callback(err, null);
-            } 
-            else {
-                console.log(result.rows[0].title);
 
-                callback(null, result.rows);
-            }
-        }
-    );
+    var hardcode_data = [{name: 'simon'}, {name: 'ruki'}];   
+    callback(null, hardcode_data);
+
+    // var cmd = "SELECT video_id, title FROM jbgz.video";
+    // client.execute(cmd, function (err, result) {
+    //         if (err) {
+    //             callback(err, null);
+    //         } 
+    //         else {
+    //             console.log(result.rows[0].title);
+
+    //             callback(null, result.rows);
+    //         }
+    //     }
+    // );
 };
 
 

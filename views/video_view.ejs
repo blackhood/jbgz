@@ -4,12 +4,26 @@
     <% include templates/head.ejs %>
   </head>
   <body role="document">
+    
     <% include templates/nav.ejs %>
+
+
+
+
+
+
+
+
+
+
+
     <div id="wrapper">
         <div id="page-wrapper" class="gray-bg">
 
             <div class="wrapper wrapper-content">
                 <div class="container">
+
+
 
 
 
@@ -19,12 +33,19 @@
                           <div class="ibox float-e-margins">
                               <div class="ibox-content">
 
-                                  <video id="MY_VIDEO_1" class="video-js vjs-default-skin center-block" controls
+                                  <!-- <video id="MY_VIDEO_1" class="video-js vjs-default-skin center-block" controls
                                          preload="auto" width="640" height="360" poster="#"
                                          data-setup="{}">
-                                      <source src="<?php echo $url;?>" type='video/mp4'>
-                                  </video>
-
+                                      <source src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" type='video/webm'>
+                                  </video> -->
+                                  <!-- <iframe width="854" height="600" src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" frameborder="0" allowfullscreen></iframe> -->
+                                  <!-- <object type="application/x-shockwave-flash" data="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" width="100%" height="100%" id="object_playerDiv_33660962" style="visibility: visible;"><param name="wmode" value="opaque"><param name="quality" value="high"><param name="bgcolor" value="#000"><param name="allowScriptAccess" value="always"><param name="allowfullscreen" value="true"><param name="flashvars" value="embedId=playerDiv_33660962"></object> -->
+                                  <!-- <object width="100" height="100">
+                                      <param name="movie" value="file.swf">
+                                      <embed src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" width="100" height="100">
+                                      </embed>
+                                  </object> -->
+                                  <iframe src=" <%=video.src %>" frameborder="0" width="608" height="468" scrolling="no"></iframe>
                               </div>
                           </div>
                       </div>
@@ -33,15 +54,15 @@
 
                           <div class="ibox float-e-margins">
                               <div class="ibox-content profile-content">
-                                  <h2><strong><%= name %></strong></h2>
+                                  <h2><strong><%=video.title %></strong></h2>
 
                                   <div class="row">
                                       <div class="col-xs-2 col-md-4">
-                                          <img id="head-image" src="<?php echo $profile_image_url ?>" class="img-circle img-responsive" alt="" />
+                                          <img id="head-image" src="<%=user.user_thumbnails %>" class="img-circle img-responsive" alt="" />
                                       </div>
                                       <div class="col-xs-10 col-md-8">
 
-                                          <a href="<?php echo base_url(). 'pages/profile?username=' .$creator;?>"><?php echo $creator;?></a>
+                                          <a href="#"><%=user.name %></a>
                                           <br/>
                                           <br/>
 
@@ -53,7 +74,7 @@
 
                                   <div class="row m-t-md">
                                       <div class="col-md-4">
-                                          <h5><strong><?php echo $views;?></strong>观看</h5>
+                                          <h5><strong><%=video.views %> views</strong>观看</h5>
                                       </div>
                                       <div class="col-md-8">
                                           <h5><strong>28</strong> 评价</h5>
@@ -63,8 +84,8 @@
                           </div>
                           <div class="ibox float-e-margins">
                               <div class="ibox-content profile-content">
-                                  <h4><i class="fa fa-clock-o"></i> 上传 <?php echo $create_date;?></h4>
-                                  <p><?php echo $description;?></p>
+                                  <h4><i class="fa fa-clock-o"></i><%=video.create_date %> 上传 </h4>
+                                  <p><%=video.description %></p>
                               </div>
                           </div>
                       </div>
@@ -100,46 +121,28 @@
 
                       <div class="panel-body">
                           <ul class="list-group">
-                              <?php
-                              $comments = $this->comment->get_video_comment($video_id);
-
-                              if(!empty($comments)) {
-                                  foreach ($comments as $comment) {
-                                      $content = $comment['content'];
-                                      $create_date = $comment['create_date'];
-                                      $user_name = $comment['user_name'];
-                                      $profile_image = $comment['profile_image'];
-
-
-                                      echo '
+                            <!-- TODO display and upload comments here -->
+                              
                                           <li class="list-group-item">
                                               <div class="row">
                                                   <div class="col-xs-2 col-md-1">
-                                                      <img style="height: 50px; width: 50px;" src="' . $profile_image . '" class="img-circle img-responsive" alt="" /></div>
+                                                      <img style="height: 50px; width: 50px;" src="" class="img-circle img-responsive" alt="" /></div>
                                                   <div class="col-xs-10 col-md-11">
                                                       <div>
                                                           <div class="mic-info">
-                                                              <a href="#"><h3>' . $user_name . '</h3></a>
+                                                              <a href="#"><h3>user_name</h3></a>
                                                           </div>
                                                       </div>
                                                       <div class="comment-text">
-                                                          <h4>' . $content . '</h4>
+                                                          <h4>content</h4>
                                                       </div>
 
-                                                      <small style="color: #ADACAD;">' . $create_date . '</small>
+                                                      <small style="color: #ADACAD;">create_date</small>
                                                   </div>
                                               </div>
                                           </li>
-                                      ';
-                                  }
-                              }
-                              else{
-                                  echo'
-                                  <br/>
-                                  <h3>无任何评论!</h3>
-                              ';
-                              }
-                              ?>
+                                      
+                              
                           </ul>
                           <a href="#comment-area" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> 发表评论</a>
                       </div>

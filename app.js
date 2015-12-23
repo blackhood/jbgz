@@ -8,7 +8,7 @@ app.set('view engine', 'ejs');
 
 app.use(require('./middlewares/auth.js'));
 // this will use all the controllers
-app.use(require('./controllers'));
+app.use(require('./controllers/index_controller.js'));
 
 
 

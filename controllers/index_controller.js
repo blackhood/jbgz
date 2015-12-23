@@ -10,9 +10,10 @@ var VIDEO = require('../models/video_model.js');
 
 // this is for all other .ejs page start with /user in url
 router.use('/user', require('./user_controller.js'));
-
+router.use('/video', require('./video_controller.js'));
 // this is for index.ejs router 
 router.get('/', function(req, res) {
+    console.log('come on1');
     // var keyword = req.query.keyword;
     var video = new VIDEO();
     video.get_hot_videos(0,15, function(err, hot_videos){
