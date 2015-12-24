@@ -15,18 +15,19 @@ CREATE TABLE user (
     PRIMARY KEY (user_id)
 );
 
-
 CREATE TABLE video (
     video_id uuid,
     user_id uuid,
+    user_name text,
     title varchar,
     description text,
     upload_date timestamp,
-    duration timestamp,
+    duration text,
     tags set<text>,
     src text,
-    video_thumbnails set<blob>,
-    image_thumbnail <blob>,
+    video_thumbnails text,
     views int,
     PRIMARY KEY (video_id)
 );
+
+INSERT INTO jbgz.video (video_id, user_id, user_name, title, description, upload_date, duration, tags, src, video_thumbnails, views ) VALUES( 91b90ebf-69fb-4437-a275-399e5f8b9937 , 083f2bec-c505-427d-8e92-100e95356484, 'yiming wang', 'first video ever!!', 'best video ever', '2015-12-22', '00:03:00',{'#tall', '#asian'},'http://91.p9p.co/ev.php?VID=0e4ceBOYjQt1B4F2wOyChgc4JUSQz15cliIxvbxFRWGc4GIx','http://www.exgf.com/images/04JUL2012/05.jpg', 999);
