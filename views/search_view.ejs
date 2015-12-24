@@ -11,13 +11,11 @@
                 <div class="container">
 
 
-
-                  <% var videos = hot_videos %>
+                  
+                  
                   <% include templates/videos.ejs %>
 
-
-
-                    
+                  <%-paginator.render()%>
 
                 </div>
             </div>

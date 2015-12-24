@@ -14,7 +14,7 @@ router.get('/some_url', function(req, res, next){
 // this refer to /video/
 router.get('/', function(req, res, next){
     var video_id = req.query.video_id;
-    video = {
+    var video = {
         video_id: 111, 
         user_id:222, 
         upload_date: '12/22/2015', 
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next){
         views:'999'
     };
 
-    user = {
+    var user = {
         user_id: 222,
         password: 'encrpted',
         name: 'david',
@@ -39,12 +39,38 @@ router.get('/', function(req, res, next){
     }
     console.log('come on1');
     console.log('2222');
-    console.log(video_id);
+    // console.log(video_id);
     res.render('video_view', {title:  'user page', video: video, user: user});
 
 });
 
-// this refer to /user/some_url
+router.get('/search',function(req, res, next){
+
+    var page = req.query.page;
+    if(!page){
+        page = 1;
+    }
+    console.log(page);
+
+
+    var keyword = req.query.keyword;
+    console.log(keyword);
+    var v = new video();
+    v.search_videos(0,20,function(err, search_results){
+        if(err){
+            //do something...
+        } else {
+
+            var pagination = require('pagination');
+            var paginator = pagination.create('search', {prelink:'/video/search', current: page, rowsPerPage: 200, totalResult: 10020});
+            console.log(paginator.render());
+
+            res.render('search_view', {'title': 'jbgz', 'videos': search_results, video_type:'search_videos', paginator: paginator});
+        }
+    });
+
+});
+
 
 
 module.exports = router;
