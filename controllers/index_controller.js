@@ -16,8 +16,10 @@ router.use('/video', require('./video_controller.js'));
 router.get('/', function(req, res) {
     console.log('come on1');
     // var keyword = req.query.keyword;
+
+    var backet = "'2015-12'";
     var video = new VIDEO();
-    video.get_hot_videos(0,15, function(err, hot_videos){
+    video.get_hot_videos(backet, function(err, hot_videos){
         // console.log(error);
         console.log('this is the main page');
         
