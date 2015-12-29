@@ -1,5 +1,7 @@
 var express = require("express");
 var path = require('path');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://52.33.233.61:27017/testdb');
 
 var app = express();
 app.use(express.static(__dirname + '/public'));

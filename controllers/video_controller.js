@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('../middlewares/auth');
-var video = require('../models/video_model.js');
-
+var video = require('../models/video_manager.js');
+var paginator = require('super-pagination').paginator;
 
 router.get('/some_url', function(req, res, next){
     console.log('come 2');
@@ -14,17 +14,6 @@ router.get('/some_url', function(req, res, next){
 // this refer to /video/
 router.get('/', function(req, res, next){
     var video_id = req.query.video_id;
-    var video = {
-        video_id: 111, 
-        user_id:222, 
-        upload_date: '12/22/2015', 
-        duration:'3min', 
-        src: 'http://91.p9p.co/ev.php?VID=0e4ceBOYjQt1B4F2wOyChgc4JUSQz15cliIxvbxFRWGc4GIx', 
-        video_thumbnails:'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiMz8qm4_DJAhVEMSYKHZf0AMwQjRwIBw&url=http%3A%2F%2Fexgf.com%2F&psig=AFQjCNHndV0Hi1V5K6YgzLsBszJWkPO25g&ust=1450918580955574',
-        title:'porn 123',
-        description:'best porn ever',
-        views:'999'
-    };
 
     var user = {
         user_id: 222,
@@ -37,11 +26,20 @@ router.get('/', function(req, res, next){
         videos: [111]
 
     }
-    console.log('come on1');
-    console.log('2222');
-    // console.log(video_id);
-    res.render('video_view', {title:  'user page', video: video, user: user});
+    // console.log('come on1');
+    // console.log('2222');
+    // // console.log(video_id);
+    // res.render('video_view', {title:  'user page', video: video, user: user});
 
+
+    video.get_video_of_id(video_id, function(err, video){
+        if(err){
+            throw err;
+        }
+
+        console.log(video);
+        res.render('video_view', {title:  'user page', video: video[0], user: user});
+    });
 });
 
 router.get('/search',function(req, res, next){
@@ -55,22 +53,90 @@ router.get('/search',function(req, res, next){
 
     var keyword = req.query.keyword;
     console.log(keyword);
-    var v = new video();
-    v.search_videos(0,20,function(err, search_results){
+    // var v = new video();
+    video.search_videos(keyword, 0,20,function(err, search_results){
         if(err){
+            console.log('something wrong...')
             //do something...
         } else {
 
-            var pagination = require('pagination');
-            var paginator = pagination.create('search', {prelink:'/video/search', current: page, rowsPerPage: 200, totalResult: 10020});
-            console.log(paginator.render());
+            var pagination = new paginator().set({
+                per_page : 10,
+                current_page : page,
+                total : 1000,
+                number_of_pages : 100,
+                number_of_links : 10,
+                url : '/video/search?keyword=' + keyword,
+                theme : 'bootstrap'
+            });
 
-            res.render('search_view', {'title': 'jbgz', 'videos': search_results, video_type:'search_videos', paginator: paginator});
+
+            res.render('search_view', {'title': 'jbgz', 'videos': search_results, video_type:'search_videos', paginator: pagination});
         }
     });
 
 });
 
+router.get('/hot_video',function(req, res, next){
 
+    var page = req.query.page;
+    if(!page){
+        page = 1;
+    }
+    console.log(page);
+
+    // var v = new video();
+    video.get_hot_videos((page-1)*2, 2,function(err, hot_videos){
+        if(err){
+            console.log('something wrong...')
+            //do something...
+        } else {
+            var pagination = new paginator().set({
+                per_page : 10,
+                current_page : page,
+                total : 1000,
+                number_of_pages : 2,
+                number_of_links : 10,
+                url : '/video/hot_video',
+                theme : 'bootstrap'
+            });
+
+
+            res.render('hot_video_view', {'title': 'jbgz', 'videos': hot_videos, video_type:'hot_videos', paginator: pagination});
+        }
+    });
+
+});
+
+router.get('/recent_video',function(req, res, next){
+
+    var page = req.query.page;
+    if(!page){
+        page = 1;
+    }
+    console.log(page);
+
+    video.get_recent_videos(page*2, 2, function(err, recent_videos){
+        if(err){
+            console.log('something wrong...')
+            //do something...
+        } else {
+
+            var pagination = new paginator().set({
+                per_page : 10,
+                current_page : page,
+                total : 1000,
+                number_of_pages : 100,
+                number_of_links : 10,
+                url : '/video/recent_video',
+                theme : 'bootstrap'
+            });
+
+
+            res.render('recent_video_view', {'title': 'jbgz', 'videos': recent_videos, video_type:'recent_videos', paginator: pagination});
+        }
+    });
+
+});
 
 module.exports = router;
