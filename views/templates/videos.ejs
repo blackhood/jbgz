@@ -7,7 +7,9 @@
                         <h2 class="category-title"><span class="glyphicon"></span>
                             <%=video_type%>
                             <% if(video_type === '最热视频'){ %>
-                                <span class="view-more"><a href="/video/hot_videos">观看更多</a></span>
+                                <span class="view-more"><a href="/video/hot_video">观看更多</a></span>
+                            <% } else if(video_type === '最新视频'){ %>
+                                <span class="view-more"><a href="/video/recent_video">观看更多</a></span>
                             <% } %>
                         </h2>
                     </div>
@@ -29,7 +31,7 @@
                                     <br/>
                                     <small> 时长:<%=videos[i].duration%></small>
                                     <br/>
-                                    <small> 添加:<%=videos[i].upload_date%></small>
+                                    <small> 添加:<%=videos[i].upload_date.toISOString().replace(/T/, ' ').replace(/\..+/, '')%></small>
                                 </div>
                             </a>
                         </div>

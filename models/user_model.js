@@ -1,28 +1,46 @@
-// this is one of the best way to creat model
-// require some kind of db - mongodb for example
-// var mangodb = require('mongodb');
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    bcrypt = require('bcryptjs'),
+    SALT_WORK_FACTOR = 10;
 
-// constructor
-function USER(){
-    // some internal variables
-    // this.username = username;
-}
+var user_schema = new Schema({
+    name: {type: String, required: true},
+    password: {type: String, required: true},
+    email: String,
+    gender: String,
+    created_date: {type: Date, default: Date.now},
+    profile_img: {type: String, default: 'https://chivethebrigade.files.wordpress.com/2012/04/girls-mma-500-6.jpg'},
+    // thumbnail: {type: String, default: 'https://chivethebrigade.files.wordpress.com/2012/04/girls-mma-500-6.jpg'},
+    videos: {type: [{type: Schema.Types.ObjectId}], default: []}
+});
 
+user_schema.pre('save', function(next) {
 
-USER.prototype.some_function_name = function(argument, callback){
-    var result;
+    var user = this;
 
-    // do something...
+    // only hash the password if it has been modified (or is new)
+    if (!user.isModified('password')) return next();
 
-    callback(result);
+    // generate a salt
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) return next(err);
+
+        // hash the password along with our new salt
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) return next(err);
+
+            // override the cleartext password with the hashed one
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+user_schema.methods.comparePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
 };
 
-USER.prototype.update_user = function(para){
-
-};
-
-USER.prototype.some_var = "";
-
-
-
-module.exports = USER;
+module.exports = mongoose.model('user', user_schema);

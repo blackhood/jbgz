@@ -45,16 +45,20 @@ router.get('/', function(req, res, next){
 router.get('/search',function(req, res, next){
 
     var page = req.query.page;
+    var need_total = false;
     if(!page){
         page = 1;
+        need_total = true;
     }
     console.log(page);
-
+    if(typeof req.session.total_pages !== 'undefined'){
+        need_total = true;
+    }
 
     var keyword = req.query.keyword;
     console.log(keyword);
     // var v = new video();
-    video.search_videos(keyword, 0,20,function(err, search_results){
+    video.search_videos(keyword, (page-1)*2, page*2, need_total, function(err, search_results, total_pages){
         if(err){
             console.log('something wrong...')
             //do something...
@@ -86,7 +90,7 @@ router.get('/hot_video',function(req, res, next){
     console.log(page);
 
     // var v = new video();
-    video.get_hot_videos((page-1)*2, 2,function(err, hot_videos){
+    video.get_hot_videos((page-1)*2, page*2,function(err, hot_videos){
         if(err){
             console.log('something wrong...')
             //do something...
@@ -95,7 +99,7 @@ router.get('/hot_video',function(req, res, next){
                 per_page : 10,
                 current_page : page,
                 total : 1000,
-                number_of_pages : 2,
+                number_of_pages : 10,
                 number_of_links : 10,
                 url : '/video/hot_video',
                 theme : 'bootstrap'
@@ -116,7 +120,7 @@ router.get('/recent_video',function(req, res, next){
     }
     console.log(page);
 
-    video.get_recent_videos(page*2, 2, function(err, recent_videos){
+    video.get_recent_videos((page-1)*2, page*2, function(err, recent_videos){
         if(err){
             console.log('something wrong...')
             //do something...
@@ -137,6 +141,17 @@ router.get('/recent_video',function(req, res, next){
         }
     });
 
+});
+
+router.post('/upload_video',function(req, res, next){
+
+
+    console.log( req.body.fileToUpload );
+
+    // video.upload_video(v, function(err, response){
+    //     console.log(err);
+    //     console.log(response);
+    // });
 });
 
 module.exports = router;

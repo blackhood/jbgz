@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include templates/head.ejs %>
+
+  </head>
+  <body role="document">
+    <% include templates/nav.ejs %>
+    
+
+                  
+
+                      <div id="wrapper">
+
+                        <!-- $('link[rel=stylesheet][href~="/css/cool.css"]').remove(); -->
+                        <% include templates/left_menu.ejs %>
+                        <div id="page-wrapper" class="gray-bg">
+                            <div class="wrapper wrapper-content">
+                                <div class="row">
+                                    
+
+
+
+                                    <div class="col-lg-12">
+                                      <div class="ibox float-e-margins">
+                                          <div class="ibox-title">
+                                              <h3>上传新视频</h3>
+                                          </div>
+
+                                          <div class="ibox-content">
+                                              <form method="post" action="/video/upload_video" class="form-horizontal" enctype="multipart/form-data" id="upload-video-form">
+                                                <div class="form-group"><label class="col-sm-2 control-label">视频名字</label>
+                                                    <div class="col-sm-10">
+                                                      <input type="text" class="form-control" name="video_name">
+                                                    </div>
+                                                  </div>
+                                                  <div class="hr-line-dashed"></div>
+                                                  
+                                                  <div class="form-group">
+                                                    <label class="col-sm-2 control-label">内容介绍</label>
+                                                      <div class="col-sm-10">
+                                                <div class="control-group">
+
+                                                        
+                                                  <textarea id="textarea" name="description"cols="100" rows = "5"></textarea>
+
+                                              </div> 
+                                              <span class="help-block m-b-none">请输入100字以内</span>
+                                                      </div>
+                                                  </div>
+                                                  
+                                                  
+                                                  <div class="hr-line-dashed"></div>
+                                                  
+                                                  <div class="form-group"><label class="col-sm-2 control-label">上传视频</label>
+                                                  <div class="col-sm-10">
+                                                      <input type="file" name="fileToUpload" id="fileToUpload">
+                                                  </br>
+                                                      <input type="submit" class="btn btn-w-m btn-primary" value="点击上传" name="submit" id="uploadVideo">
+                                                  </div>
+                                              </div>
+                                              </form>
+                                          </div>
+                                      </div>
+                                    </div>
+
+                                     <!-- file_uploader and videos here -->
+
+                                    
+                                            
+                                            
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                
+  </body>
+  <% include templates/footer.ejs %>
+  <script src="/js/index.js"></script>
+  <script type="text/javascript">
+        // $("link[href=./css/cool.css]").attr("disabled", "disabled");
+        $("#coolcss").attr("disabled", "disabled");
+        // $('link[rel=stylesheet][href="/css/cool.css"]').remove();
+    </script>
+</html>
+
+
+
+

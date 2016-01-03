@@ -1,9 +1,45 @@
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a href="/">
-                <img src="/img/logo.jpg" height ="40" href="#">
-            </a>
-        </div>
+    <div class="navbar-header">
+        <a href="/">
+            <img src="/img/logo.jpg" height ="40" href="#">
+        </a>
+    </div>
+
+
+    <% if(typeof username !== 'undefined'){ %>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <form class="form" role="form" method="post" action="#" accept-charset="UTF-8" id="login-nav">
+                    <button type="submit" class="btn btn-w-m btn-outline btn-danger" name="upload">上传</button>
+                </form>
+            </li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%-username%><b class="caret"></b></a>
+                <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                    <li>
+                        <div class="form-group">
+                            <a href="/user/personal"><button type="submit" class="btn btn-success btn-block">我的账户</button></a>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+
+
+                    <li>
+                        <form class="form" role="form" method="post" action="/user/logout" accept-charset="UTF-8" id="login-nav">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block" name="logOut"><i class="fa fa-sign-out"></i>退出</button>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    <% } else { %>
+
+   
+
         <ul class="nav navbar-nav navbar-top-links navbar-right">
             <li class="dropdown">
                 <form class="form" role="form" method="post" action="#" accept-charset="UTF-8" id="login-nav">
@@ -16,7 +52,7 @@
                     <li>
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="form" role="form" method="post" action="/sign_up_after" accept-charset="UTF-8" id="login-nav">
+                                <form class="form" role="form" method="post" action="/user/sign_up" accept-charset="UTF-8" id="login-nav">
                                     <div class = "tooltip-demo">
 
                                         <div class="form-group">
@@ -58,10 +94,10 @@
                     <li>
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="form" role="form" method="post" action="#" accept-charset="UTF-8" id="login-nav">
+                                <form class="form" role="form" method="post" action="/user/login" accept-charset="UTF-8" id="login-nav">
                                     <div class="form-group">
                                         <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                                        <input type="text" name="username" class="form-control" id="exampleInputEmail2" placeholder="用户名" required>
+                                        <input type="text" name="email" class="form-control" id="exampleInputEmail2" placeholder="用户名" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="sr-only" for="exampleInputPassword2">Password</label>
@@ -83,36 +119,36 @@
                 </ul>
             </li>
         </ul>
+     <% } %>
 
-
-        <div class="search-form">
-            <form action="/video/search" id="navbar-search" method="get">
-                <div class="input-group">
-                    <input type="text" name="keyword" class="form-control input-lg">
-                    <div class="input-group-btn">
-                        <button class="btn btn-lg btn-primary" >
-                            搜索
-                        </button>
-                    </div>
+    <div class="search-form">
+        <form action="/video/search" id="navbar-search" method="get">
+            <div class="input-group">
+                <input type="text" name="keyword" class="form-control input-lg">
+                <div class="input-group-btn">
+                    <button class="btn btn-lg btn-primary" >
+                        搜索
+                    </button>
                 </div>
-            </form>
-        </div>
-    </nav>
-
-    <div class="row wrapper border-bottom white-bg page-heading" id="navbar-second-row">
-
-        <div class="container-fluid ">
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-center">
-                    <li><a href="/">主页</a></li>
-                    <li><a href="/video/hot_video">当前最热</a></li>
-                    <li><a href="/video/recent_video">最近上传</a></li>
-                    <li><a href="#">名人榜</a></li>
-                    <li><a href="/contact">联系我们</a></li>
-                </ul>
-
-
             </div>
+        </form>
+    </div>
+</nav>
+
+<div class="row wrapper border-bottom white-bg page-heading" id="navbar-second-row">
+
+    <div class="container-fluid ">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-center">
+                <li><a href="/">主页</a></li>
+                <li><a href="/video/hot_video">当前最热</a></li>
+                <li><a href="/video/recent_video">最近上传</a></li>
+                <li><a href="#">名人榜</a></li>
+                <li><a href="/contact">联系我们</a></li>
+            </ul>
+
+
         </div>
     </div>
+</div>

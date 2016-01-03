@@ -31,8 +31,16 @@ router.get('/', function(req, res) {
         if(err){
             throw err;
         } else{
-            console.log('good');
-            res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos, video_type:'最热视频'});
+
+            video.get_recent_videos(0,15, function(error, recent_videos){
+                if(err){
+                    throw error;
+                } else{
+                    console.log('good');
+                    res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos, 'recent_videos': recent_videos, video_type:'最热视频'});
+                }
+            });
+            
         }
     });
 });

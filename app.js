@@ -3,10 +3,29 @@ var path = require('path');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://52.33.233.61:27017/testdb');
 
+var session = require('express-session');
+var bodyParser = require('body-parser');
+
+
 var app = express();
 app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+
+app.use(session({
+  secret: 'ruki_simon',
+  resave: false,
+  saveUninitialized: true,
+  httpOnly: true,
+  secure: true
+}));
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
 
 app.use(require('./middlewares/auth.js'));
 // this will use all the controllers

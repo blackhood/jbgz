@@ -10,13 +10,14 @@
             <div class="wrapper wrapper-content">
                 <div class="container">
 
-
+                  
 
                   <% var videos = hot_videos %>
                   <% include templates/videos.ejs %>
 
-
-
+                  <% video_type = "最新视频"%>
+                  <% var videos = recent_videos %>
+                  <% include templates/videos.ejs %>
                     
 
                 </div>
