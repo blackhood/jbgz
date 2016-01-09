@@ -31,7 +31,7 @@
                                     <br/>
                                     <small> 时长:<%=videos[i].duration%></small>
                                     <br/>
-                                    <small> 添加:<%=videos[i].upload_date.toISOString().replace(/T/, ' ').replace(/\..+/, '')%></small>
+                                    <small> 添加:<%=videos[i].upload_date.toISOString().split('T')[0]%></small>
                                 </div>
                             </a>
                         </div>

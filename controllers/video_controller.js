@@ -3,6 +3,13 @@ var router = express.Router();
 var auth = require('../middlewares/auth');
 var video = require('../models/video_manager.js');
 var paginator = require('super-pagination').paginator;
+// var express = require('express');
+var multer  = require('multer');
+var uploading = multer({
+  dest: './public/uploads/',
+  limits: {fileSize: 1000000000, files:1},
+})
+
 
 router.get('/some_url', function(req, res, next){
     console.log('come 2');
@@ -32,13 +39,18 @@ router.get('/', function(req, res, next){
     // res.render('video_view', {title:  'user page', video: video, user: user});
 
 
-    video.get_video_of_id(video_id, function(err, video){
+    video.get_video_of_id(video_id, function(err, v){
         if(err){
             throw err;
         }
-
-        console.log(video);
-        res.render('video_view', {title:  'user page', video: video[0], user: user});
+        
+        console.log(v);
+        res.render('video_view', {title:  'user page', video: v[0], user: user});
+    });
+    video.update_views(video_id, function(error) {
+        if (error){
+            console.log('update video view count failed for ' + video_id + '\n' + err);
+        }
     });
 });
 
@@ -143,10 +155,14 @@ router.get('/recent_video',function(req, res, next){
 
 });
 
-router.post('/upload_video',function(req, res, next){
 
 
-    console.log( req.body.fileToUpload );
+router.post('/upload_video', uploading.single('fileToUpload'), function(req, res, next){
+    // console.log(req.body);
+    console.log(req.file);
+
+
+    // console.log( req.body.fileToUpload );
 
     // video.upload_video(v, function(err, response){
     //     console.log(err);

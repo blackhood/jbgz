@@ -4,6 +4,13 @@ var auth = require('../middlewares/auth');
 var user = require('../models/user_manager.js');
 var nodemailer = require('nodemailer');
 
+var redis = require('redis');
+
+var client = redis.createClient('6379', '52.33.233.61', {no_ready_check: true});
+
+client.on('connect', function() {
+    console.log('Connected to Redis');
+});
 
 // this refer to /user/
 router.post('/', auth, function(req, res, next){
@@ -16,6 +23,12 @@ router.post('/login', auth, function(req, res, next){
     console.log(email);
     console.log(password);
 
+    client.get('sss@gmail.com', function(err, reply) {
+        console.log('-------------------------------------');
+        console.log(JSON.parse(reply));
+        // res.send(reply);
+    });
+
     user.validate(email, password, function(err, user){
         if(err){
             console.log(err);
@@ -25,6 +38,8 @@ router.post('/login', auth, function(req, res, next){
             res.redirect('/');
         }
     });
+
+
 });
 
 router.post('/logout', auth, function(req, res, next){
@@ -35,21 +50,23 @@ router.post('/logout', auth, function(req, res, next){
 });
 
 router.post('/sign_up', auth, function(req, res, next){
+    // need to check if all fields exist before storing
     var name = req.body.username;
     var email = req.body.email;
     var password = req.body.password;
     var confirm_p = req.body.confirm_p;
-
+    var gender = req.body.gender;
+    console.log(gender);
     if(password !== confirm_p){
         // do something...
     }
 
-
+    // return;
     var u = {
                 name: name,
                 password: password,
                 email: email,
-                gender: 'male'
+                gender: gender
     };
 
 
@@ -86,7 +103,8 @@ router.post('/sign_up', auth, function(req, res, next){
     //     smtpTransport.close();
     // });
 
-
+    client.set(email, JSON.stringify(u));
+    client.expire(email, 259200);
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',

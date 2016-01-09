@@ -128,9 +128,10 @@ VIDEO.prototype.update_views = function(video_id, callback){
         {'_id': video_id},
         {$inc : {'views' : 1}},
         function(err, video) {
-            if (err) throw err;
-
-            callback(1);
+            if (err)
+                callback(err)
+            else
+                callback(null);
         }
     );
 };
