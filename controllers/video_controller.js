@@ -161,7 +161,7 @@ router.post('/upload_video', uploading.single('fileToUpload'), function(req, res
     // console.log(req.body);
     console.log(req.file);
 
-
+    res.render('personal_view', {title: 'personal page'});
     // console.log( req.body.fileToUpload );
 
     // video.upload_video(v, function(err, response){

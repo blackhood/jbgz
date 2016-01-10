@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include templates/head.ejs %>
+  </head>
+  <body role="document">
+    <% include templates/nav.ejs %>
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="container">
+
+                    <% var hot_video = videos[0];%>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <a href="/video?video_id=<%=hot_video._id%>">
+                                            <div class="col-xs-10 col-md-8" id = "hottest-video-image">
+                                                <div class="image" >
+                                                    <img alt="image" style="width: 500px; height: 300px;" class="img-responsive" src="">
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <div class="col-xs-2 col-md-4">
+                                            <div class="file-name" style="text-align: center;">
+                                                <a href="/video?video_id=<%=hot_video._id%>"><h2><strong><%=hot_video.title%></strong></h2></a>
+                                                <br/>
+                                                <br/>
+                                                <br/>
+                                                <h3><strong>作者<a href="/profile?name=<%=user.name%>"></a> 观看 <%=hot_video.views%></strong></h3>
+                                                <h3><strong>时长: <%=hot_video.duration%></strong></h3>
+                                                <h3><strong>添加: <%=hot_video.create_date%></strong></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content profile-content">
+
+                                    <div class="row">
+                                        <div class="col-xs-2 col-md-4" >
+                                            <img id="head-image" src="<%=user.profile_img%>" class="img-circle img-responsive" alt="" />
+                                        </div>
+                                        <div class="col-xs-10 col-md-8">
+                                            <a href="#"><h3><%=user.name%></h3></a>
+                                            <br/>
+                                            <div class="mic-info">
+                                                <a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-play"></span>订阅(即将到来)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row m-t-md">
+                                        <div class="col-md-5">
+                                            <h5><strong>等级</strong> <a href="#"> 一年级 </a></h5>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h5>注册 <%=user.create_date%> </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="row m-t-md" style="margin-top: 0px;">
+                                        <div class="col-md-5">
+                                            <h5><strong>积分</strong> <a href="#"> </a></h5>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h5><strong>0</strong> 粉丝(即将到来) </h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content profile-content">
+                                    <h4><i class="fa fa-clock-o"></i> 关于我 </h4>
+                                    <p>some description here</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    
+              <!--       <?php
+                  $data['videos'] = $videos;
+                  $data['video_type'] = "我的视频";
+                    $data['icon'] = "glyphicon-fire";
+                  $this->load->view('templates/generate_videos',$data);
+                  ?> -->
+
+                                  
+                  
+                  
+
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+  <% include templates/footer.ejs %>
+  <script src="/js/index.js"></script>
+</html>

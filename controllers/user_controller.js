@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var auth = require('../middlewares/auth');
 var user = require('../models/user_manager.js');
+var video_manager = require('../models/video_manager.js');
 var nodemailer = require('nodemailer');
 
 var redis = require('redis');
@@ -23,11 +24,7 @@ router.post('/login', auth, function(req, res, next){
     console.log(email);
     console.log(password);
 
-    client.get('sss@gmail.com', function(err, reply) {
-        console.log('-------------------------------------');
-        console.log(JSON.parse(reply));
-        // res.send(reply);
-    });
+    
 
     user.validate(email, password, function(err, user){
         if(err){
@@ -69,41 +66,10 @@ router.post('/sign_up', auth, function(req, res, next){
                 gender: gender
     };
 
+    var infor = {'user': u, 'hash': 'some hash'}
 
-    // Use Smtp Protocol to send Email
-    // var smtpTransport = nodemailer.createTransport({
-    //     service: "gmail",
-    //     auth: {
-    //         user: "jianbinguoziyouknow@gmail.com",
-    //         pass: "FanCai007"
-    //     }
-    // }, {
-    //     // default values for sendMail method 
-    //     from: 'jianbinguoziyouknow@gmail.com',
-    //     headers: {
-    //         'My-Awesome-Header': '123'
-    //     }
-    // });
 
-    // var mail = {
-    //     from: "jianbing<jianbinguoziyouknow@gmail.com>",
-    //     to: email,
-    //     subject: "Thank you for sign up",
-    //     text: "Here should be some link to the confirm page"
-    //     // html: "<b>Node.js New world for me</b>"
-    // }
-
-    // smtpTransport.sendMail(mail, function(error, response){
-    //     if(error){
-    //         console.log(error);
-    //     }else{
-    //         console.log("Message sent: " + response.message);
-    //     }
-
-    //     smtpTransport.close();
-    // });
-
-    client.set(email, JSON.stringify(u));
+    client.set(email, JSON.stringify(infor));
     client.expire(email, 259200);
 
     var transporter = nodemailer.createTransport({
@@ -119,36 +85,86 @@ router.post('/sign_up', auth, function(req, res, next){
             'My-Awesome-Header': '123'
         }
     });
+    var mes = '感谢注册!你的账户已经被建立, 请点击以下链接激活.账号: '+ name + 
+    '请点击链接激活:http://localhost:5000/user/verify_email?email='+email;
     transporter.sendMail({
         to: email,
-        subject: 'hello',
-        text: 'hello world!'
+        subject: 'welcome to jbgz',
+        text: mes
     }, function (err, info){
         if(err){
             console.log(err);
         } else {
             console.log(info);
-        }
-    });
-
-
-
-
-    user.create_user(u, function(err){
-        if(err){
-            console.log(err);
-        } else {
-            console.log('everything is fine');
-            req.session.username = name;
             res.redirect('/');
         }
     });
+
+
+
+
+    // user.create_user(u, function(err){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         console.log('everything is fine');
+    //         req.session.username = name;
+    //         res.redirect('/');
+    //     }
+    // });
 });
+
+router.get('/verify_email', function(req, res, next){
+    var email = req.query.email;
+    console.log(email);
+
+    client.get(email, function(err, reply) {
+        if(err) {
+            console.log(err);
+            throw err;
+            res.render('verify_email_view', {title: 'veirfy email page', message:'email verify failed.'});
+        } 
+
+        console.log('-------------------------------------');
+        var u = JSON.parse(reply);
+        u = u['user'];
+        console.log(user);
+
+        if(u){
+            user.create_user(u, function(error){
+                if(error){
+                    console.log(error);
+                    res.render('verify_email_view', {title: 'veirfy email page', message:'email verify failed.'});
+                } else {
+                    console.log('everything is fine');
+                    // req.session.username = name;
+                    // res.redirect('/');
+                    res.render('verify_email_view', {title: 'veirfy email page', message:'email has been verified!'});
+                }
+            });
+        } else {
+            console.log('no user found in redit when creating user');
+        }
+        
+
+        // res.send(reply);
+    });
+
+    
+});
+
 
 router.get('/personal', function(req, res, next){
     res.render('personal_view', {title: 'personal page'});
 });
 
+
+router.get('/profile', function(req, res, next){
+    var user_videos = video_manager.get_video_of_user('username or email');
+    var u = user.get_user_by_id('someid');
+    res.render('profile_view', {'title': 'profile', 'videos': user_videos,'user':u, video_type:'user_videos'});
+    // res.render('profile_view', {title: 'profile page'});
+});
 
 
 module.exports = router;
