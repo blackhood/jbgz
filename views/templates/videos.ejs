@@ -15,11 +15,11 @@
                     </div>
                 </div>
 
-                <% for(var i=0; i < videos.length; i++) {%>
+                <%  if(typeof videos !== 'undefined'){ for(var i=0; i < videos.length; i++) {%>
 
                     <div class="file-box">
                         <div class="file">
-                            <a href="/video?video_id=<%=videos[i]._id%>">
+                            <a href="/video?v_id=<%=videos[i]._id%>">
                                 <span class="corner"></span>
 
                                 <div class="image">
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="file-name" style="text-align: center"> <%=videos[i].title%>
                                     <br/>
-                                    <small>作者 <a href="#"><%=videos[i].user_name%></a>观看 <%=videos[i].views%></small>
+                                    <small>作者 <a href="/user/profile?username=<%=videos[i].user_name%>"><%=videos[i].user_name%></a>观看 <%=videos[i].views%></small>
                                     <br/>
                                     <small> 时长:<%=videos[i].duration%></small>
                                     <br/>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
 
-                <% } %>
+                <% }} %>
                 
             </div>
         </div>

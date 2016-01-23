@@ -1,174 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <% include templates/head.ejs %>
-  </head>
-  <body role="document">
-    
-    <% include templates/nav.ejs %>
-
-
-
-
-
-
-
-
-
-
-
-    <div id="wrapper">
-        <div id="page-wrapper" class="gray-bg">
-
-            <div class="wrapper wrapper-content">
-                <div class="container">
-
-
-
-
-
-                  <!-- video and comment-->
-                  <div class="row">
-                      <div class="col-lg-8">
-                          <div class="ibox float-e-margins">
-                              <div class="ibox-content">
-
+<head>
+  <% include templates/head.ejs %>
+</head>
+<body role="document">
+  <% include templates/nav.ejs %>
+  <div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+      <div class="wrapper wrapper-content">
+        <div class="container">
+          <!-- video and comment-->
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="ibox float-e-margins">
+                <div class="ibox-content">
                                   <!-- <video id="MY_VIDEO_1" class="video-js vjs-default-skin center-block" controls
                                          preload="auto" width="640" height="360" poster="#"
                                          data-setup="{}">
                                       <source src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" type='video/webm'>
-                                  </video> -->
-                                  <!-- <iframe width="854" height="600" src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" frameborder="0" allowfullscreen></iframe> -->
-                                  <!-- <object type="application/x-shockwave-flash" data="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" width="100%" height="100%" id="object_playerDiv_33660962" style="visibility: visible;"><param name="wmode" value="opaque"><param name="quality" value="high"><param name="bgcolor" value="#000"><param name="allowScriptAccess" value="always"><param name="allowfullscreen" value="true"><param name="flashvars" value="embedId=playerDiv_33660962"></object> -->
+                                      </video> -->
+                                      <!-- <iframe width="854" height="600" src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" frameborder="0" allowfullscreen></iframe> -->
+                                      <!-- <object type="application/x-shockwave-flash" data="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" width="100%" height="100%" id="object_playerDiv_33660962" style="visibility: visible;"><param name="wmode" value="opaque"><param name="quality" value="high"><param name="bgcolor" value="#000"><param name="allowScriptAccess" value="always"><param name="allowfullscreen" value="true"><param name="flashvars" value="embedId=playerDiv_33660962"></object> -->
                                   <!-- <object width="100" height="100">
                                       <param name="movie" value="file.swf">
                                       <embed src="http://ss.phncdn.com/html5player/flash/oldFlash/stable/pornhub/player.swf" width="100" height="100">
                                       </embed>
-                                  </object> -->
-                                  <iframe src="<%=video.src%>" frameborder="0" width="608" height="468" scrolling="no"></iframe>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="col-lg-4">
-
-                          <div class="ibox float-e-margins">
-                              <div class="ibox-content profile-content">
-                                  <h2><strong><%=video.title %></strong></h2>
-
-                                  <div class="row">
-                                      <div class="col-xs-2 col-md-4">
-                                          <img id="head-image" src="<%=user.user_thumbnails %>" class="img-circle img-responsive" alt="" />
-                                      </div>
-                                      <div class="col-xs-10 col-md-8">
-
-                                          <a href="#"><%=user.name %></a>
-                                          <br/>
-                                          <br/>
-
-                                          <div class="mic-info">
-                                              <a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-play"></span>订阅(即将到来)</a>
-                                          </div>
-                                      </div>
-                                  </div>
-
-                                  <div class="row m-t-md">
-                                      <div class="col-md-4">
-                                          <h5><strong><%=video.views %> views</strong>观看</h5>
-                                      </div>
-                                      <div class="col-md-8">
-                                          <h5><strong>28</strong> 评价</h5>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="ibox float-e-margins">
-                              <div class="ibox-content profile-content">
-                                  <h4><i class="fa fa-clock-o"></i><%=video.create_date %> 上传 </h4>
-                                  <p><%=video.description %></p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- submit comment -->
-                  <div class="row">
-                      <div class="col-lg-12">
-                          <div class="ibox float-e-margins" id="video-comment">
-                              <div id="comment-area" class="ibox-title">
-                                  <h5>随便写两句评论吧</h5>
-                              </div>
-
-                              <form action="#" method="post">
-                                  <textarea name="content" class="form-control input-lg" rows = "10"></textarea>
-                                  <button class="btn btn-block btn-primary btn-success" name="submit_comment">
-                                      发表评论
-                                  </button>
-                              </form>
-
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- view comments  -->
-                  <div class="row">
-                      <div class="ibox float-e-margins" id="comment-all">
-                          <div class="ibox-title">
-                              <h5>所有评论</h5>
-                          </div>
-
-                      </div>
-
-                      <div class="panel-body">
-                          <ul class="list-group">
-                            <!-- TODO display and upload comments here -->
-                              
-                                          <li class="list-group-item">
-                                              <div class="row">
-                                                  <div class="col-xs-2 col-md-1">
-                                                      <img style="height: 50px; width: 50px;" src="" class="img-circle img-responsive" alt="" /></div>
-                                                  <div class="col-xs-10 col-md-11">
-                                                      <div>
-                                                          <div class="mic-info">
-                                                              <a href="#"><h3>user_name</h3></a>
-                                                          </div>
-                                                      </div>
-                                                      <div class="comment-text">
-                                                          <h4>content</h4>
-                                                      </div>
-
-                                                      <small style="color: #ADACAD;">create_date</small>
-                                                  </div>
-                                              </div>
-                                          </li>
-                                      
-                              
-                          </ul>
-                          <a href="#comment-area" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> 发表评论</a>
-                      </div>
-                  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                    </object> -->
+                  <iframe src="<%=video.src%>" frameborder="0" width="608" height="468" scrolling="no"></iframe>
+                  <!-- <iframe src="http://b3.cloudfront.net.in:88/iphone/5zYGzM2PPgjmZ8qk7pkaGQ/1453053859/115306.mp4" frameborder="0" width="608" height="468" scrolling="no"></iframe> -->
                 </div>
+              </div>
             </div>
 
-        </div>
-    </div>
-  </body>
+            <div class="col-lg-4">
 
-    <% include templates/footer.ejs %>
-    <script src="/js/index.js"></script>
+              <div class="ibox float-e-margins">
+                <div class="ibox-content profile-content">
+                  <h2><strong><%=video.title %></strong></h2>
+
+                  <div class="row">
+                    <div class="col-xs-2 col-md-4">
+                      <img id="head-image" src="<%=user.user_thumbnails %>" class="img-circle img-responsive" alt="" />
+                    </div>
+                    <div class="col-xs-10 col-md-8">
+
+                      <a href="#"><%=user.name %></a>
+                      <br/>
+                      <br/>
+
+                      <div class="mic-info">
+                        <a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-play"></span>订阅(即将到来)</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row m-t-md">
+                    <div class="col-md-4">
+                      <h5><strong><%=video.views %> views</strong>观看</h5>
+                    </div>
+                    <div class="col-md-8">
+                      <h5><strong>28</strong> 评价</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ibox float-e-margins">
+                <div class="ibox-content profile-content">
+                  <h4><i class="fa fa-clock-o"></i><%=video.create_date %> 上传 </h4>
+                  <p><%=video.description %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- submit comment -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="ibox float-e-margins" id="video-comment">
+                <div id="comment-area" class="ibox-title">
+                  <h5>随便写两句评论吧</h5>
+                </div>
+
+                <form action="#" method="post">
+                  <textarea name="content" class="form-control input-lg" rows = "10"></textarea>
+                  <button class="btn btn-block btn-primary btn-success" name="submit_comment">
+                    发表评论
+                  </button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- view comments  -->
+          <div class="row">
+            <div class="ibox float-e-margins" id="comment-all">
+              <div class="ibox-title">
+                <h5>所有评论</h5>
+              </div>
+
+            </div>
+
+            <div class="panel-body">
+              <ul class="list-group">
+                <!-- TODO display and upload comments here -->
+
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-xs-2 col-md-1">
+                      <img style="height: 50px; width: 50px;" src="" class="img-circle img-responsive" alt="" />
+                    </div>
+                    <div class="col-xs-10 col-md-11">
+                      <div>
+                        <div class="mic-info">
+                          <a href="#"><h3>user_name</h3></a>
+                        </div>
+                      </div>
+                      <div class="comment-text">
+                        <h4>content</h4>
+                      </div>
+
+                      <small style="color: #ADACAD;">create_date</small>
+                    </div>
+                  </div>
+                </li>
+
+
+              </ul>
+              <a href="#comment-area" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> 发表评论</a>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+<% include templates/footer.ejs %>
+<script src="/js/index.js"></script>
 
 </html>

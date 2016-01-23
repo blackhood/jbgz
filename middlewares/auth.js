@@ -14,12 +14,9 @@ module.exports = function(req, res, next) {
 
     //   next();
     // })
-    console.log('session username is ' + req.session.username);
     res.locals.username = req.session.username;
     next();
   } else {
-    console.log('no session');
-
     next();
   }
 }

@@ -11,7 +11,7 @@ function VIDEO(){
 };
 
 VIDEO.prototype.insert_video = function(video, callback) {
-    console.log("Insert a new video to database");
+    // console.log("Insert a new video to database");
 
     var dummy = new Video ({
         user_id: '507c7f79bcf86cd7994f6c0e',
@@ -26,41 +26,47 @@ VIDEO.prototype.insert_video = function(video, callback) {
     });
 
     dummy.save(function(err) {
-        if (err) throw err;
-
-        console.log('A new dummy has been created');
-        res.send('A new dummy has been created');
+        if (err) {
+            console.log(err);
+            callback(err);
+        } else {
+            callback(null);
+        }
     });
-
 };
 
 
 VIDEO.prototype.get_hot_videos = function(start, end, callback){
 
-    console.log('get hot videos');
+    // console.log('getting hot videos...');
 
     var monthAgo = new Date();
     monthAgo.setMonth(monthAgo.getMonth() - 1);
 
     Video.find().where('upload_date').gt(monthAgo).sort({views: -1}).skip(start).limit(end-start).exec(
         function(err, videos) {
-            if (err) throw err;
-
-            // console.log(videos);
-            callback (null, videos);
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                callback(null, videos);
+            }
         }
     );
 };
 
 
 VIDEO.prototype.get_recent_videos = function(start, end, callback){
-    console.log('get recent videos');
+    // console.log('get recent videos');
 
     Video.find().sort({upload_date: -1}).skip(start).limit(end-start).exec(
         function(err, videos) {
-            if (err) throw err;
-
-            callback(null, videos);
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                callback(null, videos);
+            }
         }
     );
 };
@@ -69,23 +75,26 @@ VIDEO.prototype.get_recent_videos = function(start, end, callback){
 VIDEO.prototype.get_video_of_id = function(video_id, callback){
     Video.find({'_id': video_id},
         function(err, video) {
-            if (err) throw err;
-            // console.log('-------------------------------------------------');
-            // console.log(video);
-            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++');
-            callback(null, video)
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                callback(null, video[0]);
+            }
         }
     );
 };
 
 
 VIDEO.prototype.all = function(callback){
-    console.log('show all videos');
+    // console.log('show all videos');
     Video.find({}, function(err, videos) {
-        if (err) throw err;
-
-        console.log(videos);
-        callback(null, videos);
+        if (err) {
+            console.log(err);
+            callback(err, null);
+        } else {
+            callback(null, videos);
+        }
     });
 };
 
@@ -128,10 +137,13 @@ VIDEO.prototype.update_views = function(video_id, callback){
         {'_id': video_id},
         {$inc : {'views' : 1}},
         function(err, video) {
-            if (err)
+            if (err){
+                console.log(err);
                 callback(err)
-            else
+            }
+            else{
                 callback(null);
+            }
         }
     );
 };

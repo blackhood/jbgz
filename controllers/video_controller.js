@@ -20,7 +20,7 @@ router.get('/some_url', function(req, res, next){
 
 // this refer to /video/
 router.get('/', function(req, res, next){
-    var video_id = req.query.video_id;
+    var video_id = req.query.v_id;
 
     var user = {
         user_id: 222,
@@ -33,25 +33,19 @@ router.get('/', function(req, res, next){
         videos: [111]
 
     }
-    // console.log('come on1');
-    // console.log('2222');
-    // // console.log(video_id);
-    // res.render('video_view', {title:  'user page', video: video, user: user});
-
 
     video.get_video_of_id(video_id, function(err, v){
-        if(err){
-            throw err;
+        if(err || !v){
+            next(new Error('Can\' find the video...'));
+        } else {
+            res.render('video_view', {title:  'user page', video: v, user: user});
+            video.update_views(video_id, function(error) {
+                if (error){
+                    console.log('update video view count failed for ' + video_id + '\n' + error);
+                }
+            });
         }
-        
-        console.log(v);
-        res.render('video_view', {title:  'user page', video: v[0], user: user});
-    });
-    video.update_views(video_id, function(error) {
-        if (error){
-            console.log('update video view count failed for ' + video_id + '\n' + err);
-        }
-    });
+    });  
 });
 
 router.get('/search',function(req, res, next){

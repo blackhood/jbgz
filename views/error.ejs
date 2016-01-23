@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include templates/head.ejs %>
+    </head>
+    <body role="document">
+        <% include templates/nav.ejs %>
+        <div id="wrapper">
+            <div id="page-wrapper" class="gray-bg">
+                <div class="wrapper wrapper-content">
+                    <div class="container">
+
+                        <h1><%= message %></h1>
+                        <h2><%= error.status %></h2>
+                        <pre><%= error.stack %></pre>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+  </body>
+  <% include templates/footer.ejs %>
+  <script src="/js/index.js"></script>
+</html>
