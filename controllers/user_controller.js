@@ -155,29 +155,32 @@ router.get('/verify_email', function(req, res, next){
 router.post('/forget_password', auth, function(req, res, next){
     // need to check if all fields exist before storing
     var email = req.body.email;
-    user.user_exist(email, function(exist){
-        if(exist){
-            
-            var random_hash = crypto.randomBytes(16).toString('hex');
-
-            client.set(email, JSON.stringify(random_hash));
-            client.expire(email, 259200);
-
-            var subject = "change password";
-            var text = '请点击链接激活:http://localhost:5000/user/change_password?email='+email + '&hash=' + random_hash;
-            send_email(email, subject, text, function(err){
-                if(err){
-                    console.log(err);
-                    next(new Error(err));
-                } else {
-                    req.session.message = "Email has been sent to you!";
-                    res.redirect('/');
-                }
-            });
-            
+    user.user_exist(email, function(err, exist){
+        if(err){
+            next(new Error(err));
         } else {
-            req.session.message = "Email doesn't exist";
-            res.redirect('/');
+            if(exist){
+                var random_hash = crypto.randomBytes(16).toString('hex');
+
+                client.set(email, JSON.stringify(random_hash));
+                client.expire(email, 259200);
+
+                var subject = "change password";
+                var text = '请点击链接激活:http://localhost:5000/user/change_password?email='+email + '&hash=' + random_hash;
+                send_email(email, subject, text, function(err){
+                    if(err){
+                        console.log(err);
+                        next(new Error(err));
+                    } else {
+                        req.session.message = "Email has been sent to you!";
+                        res.redirect('/');
+                    }
+                });
+                
+            } else {
+                req.session.message = "Email doesn't exist";
+                res.redirect('/');
+            }
         }
     });
 });

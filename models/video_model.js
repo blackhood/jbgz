@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var video_schema = new Schema({
     user_id: Schema.Types.ObjectId,
     user_name: String,
+    user_img: String,
     title: {type: String, required: true},
     description: String,
     src: String,

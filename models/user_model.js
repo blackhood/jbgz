@@ -8,10 +8,9 @@ var user_schema = new Schema({
     password: {type: String, required: true},
     email: String,
     gender: String,
+    description: String,
     created_date: {type: Date, default: Date.now},
-    profile_img: {type: String, default: 'https://chivethebrigade.files.wordpress.com/2012/04/girls-mma-500-6.jpg'},
-    // thumbnail: {type: String, default: 'https://chivethebrigade.files.wordpress.com/2012/04/girls-mma-500-6.jpg'},
-    videos: {type: [{type: Schema.Types.ObjectId}], default: []}
+    profile_img: {type: String, default: 'https://chivethebrigade.files.wordpress.com/2012/04/girls-mma-500-6.jpg'}
 });
 
 user_schema.pre('save', function(next) {
