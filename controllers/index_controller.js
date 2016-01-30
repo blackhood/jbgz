@@ -10,29 +10,19 @@ router.use('/contact', require('./contact_controller.js'));
 
 // this is for index.ejs router 
 router.get('/', function(req, res, next) {
-    
-    video.get_hot_videos(0,10, function(err, hot_videos){
+    video.get_hot_videos(0,10, false, function(err, hot_videos){
         if(err){
             next(new Error(err));
-        } else{
-
-            video.get_recent_videos(0,15, function(error, recent_videos){
-                if(err){
-                    next(new Error(err));
-                } else{
-                    if(req.session && req.session.message){
-                        var message = req.session.message;
-                        req.session.message = null;
-                        res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos, 'recent_videos': recent_videos, video_type:'最热视频', message: message});
-                        console.log('hello');
-
-                    } else {
-                        res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos, 'recent_videos': recent_videos, video_type:'最热视频'});
-                    }
-                    
-                }
-            });
-        }
+            return;
+        } 
+        console.log(hot_videos);
+        video.get_recent_videos(0,15, false, function(error, recent_videos){
+            if(err){
+                next(new Error(err));
+                return;
+            } 
+            res.render('index', {'title': 'jbgz', 'hot_videos': hot_videos, 'recent_videos': recent_videos});
+        });
     });
 });
 

@@ -36,39 +36,81 @@ VIDEO.prototype.insert_video = function(video, callback) {
 };
 
 
-VIDEO.prototype.get_hot_videos = function(start, end, callback){
-
-    // console.log('getting hot videos...');
-
+VIDEO.prototype.get_hot_videos = function(start, end, need_total, callback){
     var monthAgo = new Date();
     monthAgo.setMonth(monthAgo.getMonth() - 1);
 
-    Video.find().where('upload_date').gt(monthAgo).sort({views: -1}).skip(start).limit(end-start).exec(
-        function(err, videos) {
-            if (err) {
-                console.log(err);
-                callback(err, null);
-            } else {
-                callback(null, videos);
+    if(need_total){
+        Video.find().where('upload_date').gt(monthAgo).sort({views: -1}).count(
+            function(err, count) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null, null);
+                    return;
+                } 
+
+                Video.find().where('upload_date').gt(monthAgo).sort({views: -1}).skip(start).limit(end-start).exec(
+                    function(err, videos) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, null, null);
+                        } else {
+                            callback(null, videos, count);
+                        }
+                    }
+                );
             }
-        }
-    );
+        );
+    } else {
+        Video.find().where('upload_date').gt(monthAgo).sort({views: -1}).skip(start).limit(end-start).exec(
+            function(err, videos) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null, null);
+                } else {
+                    callback(null, videos, null);
+                }
+            }
+        );
+    }
+    
 };
 
 
-VIDEO.prototype.get_recent_videos = function(start, end, callback){
-    // console.log('get recent videos');
+VIDEO.prototype.get_recent_videos = function(start, end, need_total, callback){
+    if(need_total){
+        Video.find().sort({upload_date: -1}).count(
+            function(err, count) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null, null);
+                    return;
+                }
 
-    Video.find().sort({upload_date: -1}).skip(start).limit(end-start).exec(
-        function(err, videos) {
-            if (err) {
-                console.log(err);
-                callback(err, null);
-            } else {
-                callback(null, videos);
+                Video.find().sort({upload_date: -1}).skip(start).limit(end-start).exec(
+                    function(err, videos) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, null, null);
+                        } else {
+                            callback(null, videos, count);
+                        }
+                    }
+                );
             }
-        }
-    );
+        );
+    } else {
+        Video.find().sort({upload_date: -1}).skip(start).limit(end-start).exec(
+            function(err, videos) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null, null);
+                } else {
+                    callback(null, videos, null);
+                }
+            }
+        );
+    }
 };
 
 
@@ -99,32 +141,29 @@ VIDEO.prototype.all = function(callback){
 };
 
 VIDEO.prototype.search_videos = function(keyword, start, end, need_total, callback){
-
-    // Video.find({'title': {$regex: new RegExp (keyword, 'i')}}).skip(start).limit(end-start).exec(
-    //     function(err, videos) {
-    //         if (err) throw err;
-
-    //         callback(null, videos, 100);
-    //     }
-    // );
-
     if (need_total) {
-        var total = Video.find({'title': {$regex: new RegExp (keyword, 'i')}}).count();
-        Video.find({'title': {$regex: new RegExp (keyword, 'i')}}).skip(start).limit(end-start).exec(
-            function(err, videos) {
-                if (err) throw err;
-
-                callback(null, video, total);
+        Video.count({'title': {$regex: new RegExp (keyword, 'i')}}, function(err, total){
+            if(err){
+                callback(err, null, null);
+                return;
             }
-        );
-
+            Video.find({'title': {$regex: new RegExp (keyword, 'i')}}).skip(start).limit(end-start).exec(
+                function(err, videos) {
+                    if (err) {
+                        callback(err, null, null);
+                    } else{
+                        callback(null, videos, total);
+                    }
+                }
+            );
+        });
 
     } else {
         Video.find({'title': {$regex: new RegExp (keyword, 'i')}}).skip(start).limit(end-start).exec(
             function(err, videos) {
                 if (err) throw err;
 
-                callback(null, video);
+                callback(null, videos);
             }
         );
     }

@@ -6,21 +6,21 @@ function USER(){
 USER.prototype.create_user = function(user, callback) {
     User.findOne({ email: user['email'] }, function(err, find) {
         if (err) {
-            callback(err);
+            callback('create user failed');
+            return;
+        }
+        if (!find) {
+            var dummy = new User (user);
+            dummy.save(function(err) {
+                if (err) {
+                    callback('create user failed');
+                } else {
+                    callback(null);
+                    console.log('A new user has been created');
+                }
+            });
         } else {
-            if (!find) {
-                var dummy = new User (user);
-                dummy.save(function(err) {
-                    if (err) {
-                        callback('create user failed');
-                    } else {
-                        callback(null);
-                        console.log('A new user has been created');
-                    }
-                });
-            } else {
-                callback('Your email has already been used!');
-            }
+            callback('Your email has already been used!');
         }
     });
 };
@@ -131,17 +131,14 @@ USER.prototype.edit_info = function(user_id, infor, callback) {
 USER.prototype.user_exist = function(email, callback) {
     User.findOne({ email: email }, function(err, find) {
         if (err) {
-            console.log('flag 2 ' + err);
-            throw err;
+            callback(err, null)
         } else {
             if (find) {
-                callback(true);
+                callback(null, true);
             } else {
-                callback(false);
+                callback(null, false);
             }
         }
-
-        
     });
 };
 

@@ -7,4 +7,4 @@ function define(name, value) {
 
 
 define("PI", "3.14");
-
+define("VIDEOS_PER_PAGE", 5);
