@@ -76,9 +76,12 @@ router.get('/hot_video',function(req, res, next){
             next(new Error(err));
             return;
         } 
+        var number_of_pages = Math.ceil(totol_hot_videos/(CONSTANTS.VIDEOS_PER_PAGE));
+        if(number_of_pages === 0)
+            number_of_pages = -1;
         var pagination = new paginator().set({
             current_page : page,
-            number_of_pages : Math.ceil(totol_hot_videos/(CONSTANTS.VIDEOS_PER_PAGE)),
+            number_of_pages : number_of_pages,
             number_of_links : 10,
             url : '/video/hot_video',
             theme : 'bootstrap'
@@ -99,17 +102,20 @@ router.get('/recent_video',function(req, res, next){
         if(err){
             next(new Error(err));
             return;
-        } else {
-            var pagination = new paginator().set({
-                current_page : page,
-                number_of_pages : Math.ceil(total_recent_videos/(CONSTANTS.VIDEOS_PER_PAGE)),
-                number_of_links : 10,
-                url : '/video/recent_video',
-                theme : 'bootstrap'
-            });
+        } 
+        var number_of_pages = Math.ceil(total_recent_videos/(CONSTANTS.VIDEOS_PER_PAGE));
+        if(number_of_pages === 0)
+            number_of_pages = -1;
+        var pagination = new paginator().set({
+            current_page : page,
+            number_of_pages : number_of_pages,
+            number_of_links : 10,
+            url : '/video/recent_video',
+            theme : 'bootstrap'
+        });
 
-            res.render('recent_video_view', {'title': 'jbgz', 'videos': recent_videos, video_type:'recent_videos', paginator: pagination});
-        }
+        res.render('recent_video_view', {'title': 'jbgz', 'videos': recent_videos, video_type:'recent_videos', paginator: pagination});
+        
     });
 
 });

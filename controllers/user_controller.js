@@ -219,20 +219,41 @@ router.get('/profile', function(req, res, next){
 
 // TODO
 // handle edit form
-router.get('/edit_info', function(req, res, next){
+router.get('/info', function(req, res, next){
     if(req.session && req.session.userid){
         user_manager.get_user_by_id(req.session.userid, function(err, user_info){
             if(err){
                 console.log(err);
                 next(new Error(err));
             } else {
-                res.render('edit_info_view', {title: 'edit info', 'user': user_info});            
+                res.render('info_view', {title: 'edit info', 'user': user_info});            
             }
         });  
     } else {
         res.redirect('/');
     }
 });
+
+router.post('/edit_info', function(req, res, next){
+    if(req.session && req.session.userid){
+        var description = req.body.description;
+        var gender = req.body.gender;
+        console.log(description);
+        console.log(gender);
+
+        // user_manager.get_user_by_id(req.session.userid, function(err, user_info){
+        //     if(err){
+        //         console.log(err);
+        //         next(new Error(err));
+        //     } else {
+        //         res.render('info_view', {title: 'edit info', 'user': user_info});            
+        //     }
+        // });  
+    } else {
+        res.redirect('/');
+    }
+});
+
 
 function send_email(email, subject, text, callback){
     var transporter = nodemailer.createTransport({
