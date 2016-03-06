@@ -127,6 +127,19 @@ VIDEO.prototype.get_video_of_id = function(video_id, callback){
     );
 };
 
+VIDEO.prototype.get_video_of_user = function(user_id, callback){
+    Video.find({'user_id': user_id},
+        function(err, video) {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                callback(null, video);
+            }
+        }
+    );
+};
+
 
 VIDEO.prototype.all = function(callback){
     // console.log('show all videos');

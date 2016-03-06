@@ -9,6 +9,13 @@ client.on('connect', function() {
     console.log('Connected to Redis');
 });
 
+var multer  = require('multer');
+var uploading = multer({
+  dest: './public/uploads/',
+  limits: {fileSize: 1000000000, files:1},
+})
+
+
 var user_manager = require('../models/user_manager.js');
 var video_manager = require('../models/video_manager.js');
 
@@ -172,31 +179,91 @@ router.get('/change_password', function(req, res, next){
             return;
         }
 
-        var password = req.body.password;
-        var confirm_p = req.body.confirm_p;
-        if(password || confirm_p){
-            if(password !== confirm_p){
-                res.render('message_view', {title: 'message', message:'password/confirm_password doesn\'t match'});
-                return;
-            }
+        // var password = req.body.password;
+        // var confirm_p = req.body.confirm_p;
+        // if(password || confirm_p){
+        //     if(password !== confirm_p){
+        //         res.render('message_view', {title: 'message', message:'password/confirm_password doesn\'t match'});
+        //         return;
+        //     }
 
+        //     user_manager.get_user_by_email(email, function(err, user){
+        //         if(err) {
+        //             console.log(err);
+        //             next(new Error(err));
+        //             return;
+        //         } 
 
-            // call the change password function here
+        //         var user_id = user._id;
+        //         var info = {'password': password};
+        //         user_manager.edit_info(user_id, info, function(err, message){
+        //             if(err) {
+        //                 console.log(err);
+        //                 next(new Error(err));
+        //                 return;
+        //             } 
+        //             res.render('message_view', {title: 'message', message:'Password change succeed'});
+        //         });
+        //     });
             
-        } else {
-            res.render('change_password_view', {title: 'change password'});
-        }
+        //     // call the change password function here
+            
+        // } else {
+        //     res.render('change_password_view', {title: 'change password', email: email});
+        // }
+
+        res.render('change_password_view', {title: 'change password', email: email});
     });
+});
+
+router.post('/change_password_helper', function(req, res, next){
+    var email = req.body.email;
+    var password = req.body.password;
+    var confirm_p = req.body.confirm_p;
+    if(password && confirm_p){
+        if(password !== confirm_p){
+            res.render('message_view', {title: 'message', message:'password/confirm_password doesn\'t match'});
+            return;
+        }
+
+        user_manager.get_user_by_email(email, function(err, user){
+            if(err) {
+                console.log(err);
+                next(new Error(err));
+                return;
+            } 
+
+            var user_id = user._id;
+            var info = {'password': password};
+            user_manager.edit_info(user_id, info, function(err, message){
+                if(err) {
+                    console.log(err);
+                    next(new Error(err));
+                    return;
+                } 
+                res.render('message_view', {title: 'message', message:'Password change succeed'});
+            });
+        });
+    }
 });
 
 router.get('/personal', function(req, res, next){
     if(req.session && req.session.userid){
+        // console.log(req.session.userid);
         user_manager.get_user_by_id(req.session.userid, function(err, user_info){
             if(err){
                 console.log(err);
                 next(new Error(err));
             } else {
-                res.render('personal_view', {title: 'personal', 'user': user_info});            
+                video_manager.get_video_of_user(req.session.userid, function(err, user_videos){
+                    if(err){
+                        console.log(err);
+                        next(new Error(err));
+                    } else {
+                        // console.log(user_videos);
+                        res.render('personal_view', {title: 'personal', 'user': user_info, 'user_videos': user_videos});
+                    }
+                });
             }
         });  
     } else {
@@ -217,21 +284,50 @@ router.get('/profile', function(req, res, next){
     });  
 });
 
-// TODO
-// handle edit form
-router.get('/edit_info', function(req, res, next){
+router.get('/info', function(req, res, next){
     if(req.session && req.session.userid){
         user_manager.get_user_by_id(req.session.userid, function(err, user_info){
             if(err){
                 console.log(err);
                 next(new Error(err));
             } else {
-                res.render('edit_info_view', {title: 'edit info', 'user': user_info});            
+                res.render('info_view', {title: 'edit info', 'user': user_info});
             }
         });  
     } else {
         res.redirect('/');
     }
+});
+
+router.post('/edit_info', uploading.single('upload_image'), function(req, res, next){
+    var description = req.body.description;
+    var upload_image = req.file;
+
+    console.log(description);
+    console.log(upload_image);
+
+
+    if(req.session && req.session.userid){
+        var info = {};
+        if(upload_image){
+            // TODO
+            // put image into the s3    
+            // info['profile_img'] = return_url;
+        }
+        if(description){
+            info['description'] = description;
+        }
+        user_manager.edit_info(req.session.userid, info, function(err, message){
+            if(err){
+                next(new Error(err));
+                return;
+            } else {
+                res.redirect('/user/info');
+            }
+        });
+
+    }
+    
 });
 
 function send_email(email, subject, text, callback){

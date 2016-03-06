@@ -32,27 +32,7 @@ $(document).ready(function(){
 
     }
     
-        function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            
-            reader.onload = function (e) {
-                $('#profileImage').attr('src', e.target.result);
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
     
-    $("#imgInp").change(function(){
-    	$('#uploadImage').removeAttr('disabled');
-        readURL(this);
-       
-    });
-    
-    $("#personal_description").keydown(function(){
-    	$('#update_description').removeAttr('disabled');
-    });
     
     $("#uploadVideo").click(function(){
         $("#uploadVideo").hide();

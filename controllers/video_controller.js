@@ -118,8 +118,10 @@ router.get('/recent_video',function(req, res, next){
 
 router.post('/upload_video', uploading.single('fileToUpload'), function(req, res, next){
     // console.log(req.body);
+    // this works
     console.log(req.file);
-
+    // TODO
+    // put video into s3 and update db
     res.render('personal_view', {title: 'personal page'});
     // console.log( req.body.fileToUpload );
 

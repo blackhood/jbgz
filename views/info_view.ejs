@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include templates/head.ejs %>
+</head>
+<body role="document">
+  <% include templates/nav.ejs %>
+
+  <div id="wrapper">
+    <% include templates/left_menu.ejs %>
+
+    <div id="page-wrapper" class="gray-bg">
+      <div class="wrapper wrapper-content">
+        <div class="row wrapper border-bottom white-bg page-heading">
+          <div class="col-lg-10">
+            <h2><%=user.name%> 的账户信息</h2>
+            <div class="hr-line-dashed"></div>
+
+            <h3><strong class="text-info"> Email:</strong> <%=user.email%> </h3>
+            <div class="hr-line-dashed"></div>
+
+            <h3><strong class="text-info"> 创立时间:</strong> <%=user.created_date.toISOString().split('T')[0]%> </h3>
+            <div class="hr-line-dashed"></div>
+
+            <h3><strong class="text-info"> 积分:</strong> 即将到来。。。 </h3>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="row">
+          <!-- <form id="form1" method = "post" action="/user/edit_info" runat="server" enctype="multipart/form-data">
+            <div class="col-lg-6">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5>个人头像</h5>
+                </div>
+                
+                  <div class="ibox-content ">
+                    <img id = "profileImage" alt="your image"  class="img-responsive" src="<%=user.profile_img%>">
+                    <br/><input class="btn btn-warning btn-block" type='file' id="upload_image" name="upload_image" />
+                  </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-6">
+                <div class="ibox float-e-margins" id="video-comment">
+                  <div class="ibox-title">
+                    <h5>我的简介</h5>
+                  </div>
+                
+                  <textarea id="description" name="description" class="form-control input-lg" rows = "10"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <button id="edit_info" class="btn btn-block btn-primary btn-success" disabled="disabled" name="edit_info">修改信息</button>
+          </form> -->
+
+
+
+          <form class="form" role="form" method="post" action="/user/edit_info" accept-charset="UTF-8" id="login-nav" enctype="multipart/form-data">
+
+              <div class="form-group">
+                  <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                      <div class="ibox-title">
+                        <h5>个人头像</h5>
+                      </div>
+                      
+                        <div class="ibox-content ">
+                          <img id = "profileImage" alt="your image"  class="img-responsive" src="<%=user.profile_img%>">
+                          <br/><input class="btn btn-warning btn-block" type='file' id="upload_image" name="upload_image" />
+                        </div>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-lg-6">
+                    <div class="ibox float-e-margins" id="video-comment">
+                      <div class="ibox-title">
+                        <h5>我的简介</h5>
+                      </div>
+                      <textarea id="description" name="description" class="form-control input-lg" rows = "10"><%=user.description%></textarea>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <button type="submit" class="btn btn-success btn-block" id="edit_info" disabled="disabled">修改信息</button>
+              </div>
+          </form>
+
+
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<% include templates/footer.ejs %>
+<script src="/js/index.js"></script>
+<script type="text/javascript">
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          
+          reader.onload = function (e) {
+              $('#profileImage').attr('src', e.target.result);
+          }
+          
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+  
+  $("#upload_image").change(function(){
+    $('#edit_info').removeAttr('disabled');
+      readURL(this);
+     
+  });
+  
+  $("#description").keydown(function(){
+    $('#edit_info').removeAttr('disabled');
+  });
+  $("#coolcss").attr("disabled", "disabled");
+</script>
+</html>
+
+
+
+

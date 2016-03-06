@@ -78,38 +78,58 @@ USER.prototype.get_user_by_name = function(name, callback) {
             if (find) {
                 callback(null, find[0]);
             } else {
-                callback('Invalid user id', null);
+                callback('Invalid user name', null);
+            }
+        }        
+    });
+};
+
+USER.prototype.get_user_by_email = function(email, callback) {
+
+    //check if the email is already in the database
+    User.find({ 'email': email }, function(err, find) {
+        if (err) {
+            callback(err, null);
+        } else {
+            if (find) {
+            callback(null, find[0]);
+            } else {
+                callback('Invalid user email', null);
             }
         }        
     });
 };
 
 
-USER.prototype.edit_info = function(user_id, infor, callback) {
+USER.prototype.edit_info = function(user_id, info, callback) {
     User.findById(user_id, function(err, user) {
         if (err) {
             callback(err, null);
         } else {
             if (user) {
                 //update
-                if (infor['name']) {
-                    user.name = infor['name']
+                if (info['name']) {
+                    user.name = info['name'];
                 }
 
-                if (infor['password']) {
-                    user.password = infor['password']
+                if (info['password']) {
+                    user.password = info['password'];
                 }
 
-                if (infor['email']) {
-                    user.email = infor['email']
+                if (info['email']) {
+                    user.email = info['email'];
                 }
 
-                if (infor['gender']) {
-                    user.gender = infor['gender']
+                if (info['gender']) {
+                    user.gender = info['gender'];
                 }
 
-                if (infor['profile_img']) {
-                    user.profile_img = infor['profile_img']
+                if (info['description']) {
+                    user.description = info['description'];
+                }
+
+                if (info['profile_img']) {
+                    user.profile_img = info['profile_img'];
                 }
 
                 // save the user
